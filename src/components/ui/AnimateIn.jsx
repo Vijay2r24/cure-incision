@@ -1,14 +1,13 @@
-import { motion } from "framer-motion"
-import { useInView } from "react-intersection-observer"
+import React, { Children, cloneElement, isValidElement } from "react"
 
-const ease = [0.22, 1, 0.36, 1]
-
-const offsets = {
-  up: { y: 28, x: 0 },
-  down: { y: -28, x: 0 },
-  left: { x: -32, y: 0 },
-  right: { x: 32, y: 0 },
-  none: { x: 0, y: 0 },
+const directionMap = {
+  up: "fade-up",
+  down: "fade-down",
+  left: "fade-right",
+  right: "fade-left",
+  zoom: "zoom-in",
+  flip: "flip-up",
+  none: "",
 }
 
 export default function AnimateIn({
@@ -16,60 +15,76 @@ export default function AnimateIn({
   className = "",
   delay = 0,
   direction = "up",
-  as = "div",
-  duration = 0.65,
+  animation,
+  duration = 800,
+  offset,
+  as: Component = "div",
+  ...props
 }) {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: "0px 0px -40px 0px" })
-  const Component = motion[as] ?? motion.div
-  const { x, y } = offsets[direction] ?? offsets.up
+  const aosAnimation = animation || directionMap[direction] || "fade-up"
+  const delayMs = typeof delay === "number" && delay < 20 ? Math.round(delay * 1000) : delay
+  const durationMs = typeof duration === "number" && duration < 20 ? Math.round(duration * 1000) : duration
 
   return (
     <Component
-      ref={ref}
       className={className}
-      initial={{ opacity: 0, x, y }}
-      animate={inView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x, y }}
-      transition={{ duration, delay, ease }}
+      data-aos={aosAnimation}
+      data-aos-delay={delayMs}
+      data-aos-duration={durationMs}
+      {...(offset != null ? { "data-aos-offset": offset } : {})}
+      {...props}
     >
       {children}
     </Component>
   )
 }
 
-export function StaggerGrid({ children, className = "", stagger = 0.08 }) {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.06, rootMargin: "0px 0px -32px 0px" })
+export function StaggerGrid({
+  children,
+  className = "",
+  stagger = 0.09,
+  as: Component = "div",
+  ...props
+}) {
+  const staggerMs = typeof stagger === "number" && stagger < 20 ? Math.round(stagger * 1000) : stagger
 
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: stagger } },
-      }}
-    >
-      {children}
-    </motion.div>
+    <Component className={className} {...props}>
+      {Children.map(children, (child, index) => {
+        if (!isValidElement(child)) return child
+        const existingDelay = child.props.delay ?? 0
+        const existingDelayMs = typeof existingDelay === "number" && existingDelay < 20
+          ? Math.round(existingDelay * 1000)
+          : existingDelay
+        return cloneElement(child, {
+          delay: existingDelayMs + index * staggerMs,
+        })
+      })}
+    </Component>
   )
 }
 
-export function StaggerItem({ children, className = "" }) {
+export function StaggerItem({
+  children,
+  className = "",
+  delay = 0,
+  animation = "fade-up",
+  duration = 700,
+  as: Component = "div",
+  ...props
+}) {
+  const delayMs = typeof delay === "number" && delay < 20 ? Math.round(delay * 1000) : delay
+  const durationMs = typeof duration === "number" && duration < 20 ? Math.round(duration * 1000) : duration
+
   return (
-    <motion.div
+    <Component
       className={className}
-      variants={{
-        hidden: { opacity: 0, y: 22, scale: 0.98 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: { duration: 0.5, ease },
-        },
-      }}
+      data-aos={animation}
+      data-aos-delay={delayMs}
+      data-aos-duration={durationMs}
+      {...props}
     >
       {children}
-    </motion.div>
+    </Component>
   )
 }

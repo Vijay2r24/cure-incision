@@ -10,7 +10,7 @@ export default function NotFound() {
       </div>
       <div className="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white" />
 
-      <div className="container-page relative flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
+      <div className="container-page relative flex min-h-[60vh] flex-col items-center justify-center pt-32 pb-20 text-center">
         <motion.p
           className="text-7xl font-bold text-gradient-blue"
           initial={{ opacity: 0, scale: 0.8 }}

@@ -1,4 +1,7 @@
-import { Routes, Route } from "react-router-dom"
+import { useEffect } from "react"
+import { Routes, Route, useLocation } from "react-router-dom"
+import AOS from "aos"
+import "aos/dist/aos.css"
 import Layout from "./components/Layout"
 import Home from "./pages/Home"
 import Packages from "./pages/Packages"
@@ -18,10 +21,32 @@ import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
 
 export default function App() {
+  const location = useLocation()
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: "ease-out-cubic",
+      once: false,
+      offset: 80,
+      delay: 0,
+      mirror: true,
+    })
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      AOS.refreshHard()
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [location.pathname])
+
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Specialties />} />
+        <Route path="/appointment" element={<Contact />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/packages/:id" element={<PackageDetail />} />
         <Route path="/tests" element={<Tests />} />

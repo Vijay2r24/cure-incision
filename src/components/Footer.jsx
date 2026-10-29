@@ -46,7 +46,7 @@ export default function Footer() {
       <div className="absolute -right-24 bottom-10 h-56 w-56 rounded-full bg-brand-green/6 blur-3xl pointer-events-none" />
 
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2" data-aos="fade-up" data-aos-duration="700">
           <div className="flex flex-col sm:flex-row sm:items-start gap-4">
             <div className="flex-shrink-0 rounded-2xl bg-white p-3 inline-flex shadow-sm transition-transform duration-300 hover:scale-105">
               <Logo />
@@ -83,8 +83,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {columns.map((col) => (
-          <div key={col.title}>
+        {columns.map((col, idx) => (
+          <div key={col.title} data-aos="fade-up" data-aos-delay={100 + idx * 80} data-aos-duration="700">
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white/90">{col.title}</h4>
             <ul className="mt-4 space-y-2.5 text-sm">
               {col.links.map((link) => (

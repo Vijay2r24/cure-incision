@@ -1,250 +1,186 @@
-import { useState, useEffect, useRef } from "react"
-import { NavLink } from "react-router-dom"
-import { Menu, X, Phone, UserRound, Sparkles, ChevronRight, Shield, Clock } from "lucide-react"
-import Logo from "./Logo"
-import Button from "./ui/Button"
+import { useState, useEffect } from "react"
+import { NavLink, Link, useLocation } from "react-router-dom"
+import { Menu, X, Sun, Moon } from "lucide-react"
 
-const nav = [
+const navLinks = [
   { label: "Home", to: "/" },
-  { label: "Health Packages", to: "/packages" },
-  { label: "Diagnostic Tests", to: "/tests" },
+  { label: "Services", to: "/services" },
+  { label: "About", to: "/about" },
   { label: "Doctors", to: "/doctors" },
-  { label: "Specialties", to: "/specialties" },
-  { label: "Hospitals", to: "/hospitals" },
-  { label: "Corporate", to: "/corporate" },
+  { label: "Appointment", to: "/appointment" },
   { label: "Blog", to: "/blog" },
+  { label: "Contact", to: "/contact" },
 ]
 
-const tickers = [
-  { icon: Phone,    text: "24×7 Helpline: 1800-123-4567" },
-  { icon: Shield,   text: "NABH Accredited Labs across 120+ cities" },
-  { icon: Sparkles, text: "Trusted by 2M+ patients — Book in 60 seconds" },
-  { icon: Clock,    text: "Reports delivered in 6–8 hours" },
-]
+function useTheme() {
+  const [dark, setDark] = useState(() => {
+    if (typeof window === "undefined") return false
+    return (
+      localStorage.getItem("vitalcare-theme") === "dark" ||
+      document.documentElement.classList.contains("dark")
+    )
+  })
 
-function NavItem({ to, label, onClick }) {
-  return (
-    <NavLink
-      to={to}
-      onClick={onClick}
-      className={({ isActive }) =>
-        `relative rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 group ${
-          isActive
-            ? "text-brand-blue-dark"
-            : "text-ink-soft hover:text-brand-blue-dark"
-        }`
-      }
-    >
-      {({ isActive }) => (
-        <>
-          {/* pill bg */}
-          <span
-            className={`absolute inset-0 rounded-xl transition-all duration-200 ${
-              isActive
-                ? "bg-brand-blue-light opacity-100"
-                : "bg-brand-blue-light opacity-0 group-hover:opacity-60"
-            }`}
-          />
-          <span className="relative z-10">{label}</span>
-          {/* active underline dot */}
-          <span
-            className={`absolute -bottom-px left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-brand-blue transition-all duration-300 ${
-              isActive ? "w-5 opacity-100" : "w-0 opacity-0 group-hover:w-3 group-hover:opacity-50"
-            }`}
-          />
-        </>
-      )}
-    </NavLink>
-  )
+  useEffect(() => {
+    const root = document.documentElement
+    if (dark) {
+      root.classList.add("dark")
+      localStorage.setItem("vitalcare-theme", "dark")
+    } else {
+      root.classList.remove("dark")
+      localStorage.setItem("vitalcare-theme", "light")
+    }
+  }, [dark])
+
+  return [dark, setDark]
 }
 
 export default function Header() {
-  const [open, setOpen]         = useState(false)
+  const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [tickerIdx, setTickerIdx]     = useState(0)
-  const [tickerVisible, setTickerVisible] = useState(true)
-  const tickerTimer = useRef(null)
+  const [dark, setDark] = useTheme()
+  const location = useLocation()
 
-  /* scroll detection */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
+    const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  /* ticker rotation */
+  // Close mobile drawer on route change
   useEffect(() => {
-    tickerTimer.current = setInterval(() => {
-      setTickerVisible(false)
-      setTimeout(() => {
-        setTickerIdx((i) => (i + 1) % tickers.length)
-        setTickerVisible(true)
-      }, 380)
-    }, 3600)
-    return () => clearInterval(tickerTimer.current)
-  }, [])
+    setOpen(false)
+  }, [location.pathname])
 
-  const TickerIcon = tickers[tickerIdx].icon
+  const isTransparent = location.pathname === "/" && !scrolled && !open
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-white/85 backdrop-blur-2xl shadow-[0_8px_32px_rgba(15,76,146,0.12)] border-b border-white/60"
-          : "bg-white/95 backdrop-blur-sm border-b border-line"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        isTransparent
+          ? "bg-transparent"
+          : "border-b border-brand-100/80 bg-white/90 shadow-sm shadow-brand-700/5 backdrop-blur-xl dark:border-slate-800 dark:bg-ink/90"
       }`}
     >
-      {/* ── Top announcement bar ────────────────────────── */}
-      <div
-        className={`overflow-hidden transition-all duration-500 ${
-          scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
-        }`}
-        style={{
-          background: "linear-gradient(90deg, #0f4c92 0%, #1766c0 45%, #0fb6a8 100%)",
-        }}
-      >
-        <div className="container-page flex items-center justify-between gap-4 py-2 text-xs font-medium text-white">
-          <span
-            className={`flex items-center gap-2 transition-all duration-300 ${
-              tickerVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
-            }`}
-          >
-            <TickerIcon className="h-3.5 w-3.5 shrink-0 opacity-90" />
-            {tickers[tickerIdx].text}
-          </span>
-          <a
-            href="tel:18001234567"
-            className="hidden sm:flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-0.5 hover:bg-white/20 transition-colors duration-200"
-          >
-            <Phone className="h-3 w-3" />
-            Call Now
-            <ChevronRight className="h-3 w-3 opacity-70" />
-          </a>
-        </div>
-      </div>
-
-      {/* ── Main nav row ────────────────────────────────── */}
-      <div
-        className={`container-page flex items-center justify-between gap-4 transition-all duration-300 ${
-          scrolled ? "py-2" : "py-2.5"
-        }`}
+      <nav
+        className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8"
+        aria-label="Primary"
       >
         {/* Logo */}
-        <div className={`transition-all duration-300 ${scrolled ? "scale-90" : "scale-100"}`}>
-          <Logo />
-        </div>
-
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Main navigation">
-          {nav.map((item) => (
-            <NavItem key={item.to} {...item} />
-          ))}
-        </nav>
-
-        {/* Desktop CTA */}
-        <div className="hidden items-center gap-2 lg:flex">
-          <Button to="/login" variant="ghost" size="sm" className="group gap-1.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-blue-light transition-all duration-200 group-hover:bg-brand-blue group-hover:text-white">
-              <UserRound className="h-3.5 w-3.5" />
-            </span>
-            <span className="text-ink-soft group-hover:text-brand-blue-dark transition-colors duration-200">Login</span>
-          </Button>
-
-          <Button
-            to="/packages"
-            variant="green"
-            size="sm"
-            className="relative overflow-hidden gap-2 shadow-lg shadow-brand-green/30 hover:shadow-brand-green/50 hover:-translate-y-0.5 transition-all duration-200"
-          >
-            <Sparkles className="h-3.5 w-3.5 shrink-0" />
-            Book Now
-            <span className="pointer-events-none absolute inset-0 animate-shimmer" />
-          </Button>
-        </div>
-
-        {/* Hamburger */}
-        <button
-          type="button"
-          id="mobile-menu-toggle"
-          onClick={() => setOpen((v) => !v)}
-          className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:border-brand-blue/40 hover:bg-brand-blue-light hover:text-brand-blue-dark active:scale-95 xl:hidden"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
+        <Link
+          to="/"
+          className="group flex min-w-0 items-center gap-2"
+          onClick={() => setOpen(false)}
         >
-          <span className={`absolute transition-all duration-300 ${open ? "rotate-90 opacity-0 scale-50" : "rotate-0 opacity-100 scale-100"}`}>
-            <Menu className="h-5 w-5" />
+          <img
+            src="/logo.png"
+            alt="CureIncision logo"
+            className="h-9 w-9 shrink-0 object-contain transition duration-300 group-hover:scale-105 sm:h-11 sm:w-11"
+          />
+          <span className="min-w-0 leading-tight">
+            <span className="block truncate font-display text-base font-extrabold tracking-tight text-gradient sm:text-lg lg:text-xl">
+              CureIncision
+            </span>
+            <span className="hidden text-[10px] font-bold uppercase tracking-[0.18em] text-brand-green-dark sm:block dark:text-brand-green">
+              SURGERY PATHWAY
+            </span>
           </span>
-          <span className={`absolute transition-all duration-300 ${open ? "rotate-0 opacity-100 scale-100" : "-rotate-90 opacity-0 scale-50"}`}>
-            <X className="h-5 w-5" />
-          </span>
-        </button>
-      </div>
+        </Link>
 
-      {/* ── Gradient accent line ─────────────────────────── */}
-      <div
-        className={`h-[2px] transition-opacity duration-500 ${scrolled ? "opacity-0" : "opacity-100"}`}
-        style={{
-          background: "linear-gradient(90deg, transparent 0%, #1766c0 30%, #0fb6a8 60%, #46b555 85%, transparent 100%)",
-        }}
-      />
-
-      {/* ── Mobile drawer ───────────────────────────────── */}
-      <div
-        className={`overflow-hidden transition-all duration-500 ease-in-out xl:hidden ${
-          open ? "max-h-[580px] opacity-100" : "max-h-0 opacity-0"
-        } border-t border-line bg-white/98 backdrop-blur-2xl`}
-      >
-        <nav className="container-page flex flex-col gap-1 pb-6 pt-4" aria-label="Mobile navigation">
-          {nav.map((item, i) => (
-            <div key={item.to} className="animate-fade-up" style={{ animationDelay: `${i * 35}ms` }}>
+        {/* Center navigation links */}
+        <ul className="hidden items-center gap-0.5 lg:flex">
+          {navLinks.map((item) => (
+            <li key={item.to}>
               <NavLink
                 to={item.to}
-                onClick={() => setOpen(false)}
+                end={item.to === "/"}
                 className={({ isActive }) =>
-                  `flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-150 ${
+                  `rounded-full px-3.5 py-2 text-sm font-semibold transition ${
                     isActive
-                      ? "bg-brand-blue text-white shadow-lg shadow-brand-blue/20"
-                      : "text-ink hover:bg-brand-blue-light hover:text-brand-blue-dark"
+                      ? "bg-brand-blue-light text-brand-blue-dark dark:bg-slate-800 dark:text-brand-teal"
+                      : "text-slate-600 hover:bg-brand-blue-light/60 hover:text-brand-blue-dark dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-accent-400"
                   }`
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    <span>{item.label}</span>
-                    <ChevronRight
-                      className={`h-4 w-4 transition-transform duration-200 ${
-                        isActive ? "opacity-100 translate-x-0.5" : "opacity-30"
-                      }`}
-                    />
-                  </>
-                )}
+                {item.label}
               </NavLink>
-            </div>
+            </li>
           ))}
+        </ul>
 
-          {/* CTA row */}
-          <div className="mt-4 grid grid-cols-2 gap-2 animate-fade-up stagger-6 border-t border-line pt-4">
-            <Button to="/login" variant="outline" size="sm" className="w-full" onClick={() => setOpen(false)}>
-              <UserRound className="h-4 w-4" />
-              Login
-            </Button>
-            <Button to="/packages" variant="green" size="sm" className="relative w-full overflow-hidden" onClick={() => setOpen(false)}>
-              <Sparkles className="h-4 w-4" />
-              Book Now
-              <span className="pointer-events-none absolute inset-0 animate-shimmer" />
-            </Button>
-          </div>
-
-          {/* Quick-call strip */}
-          <a
-            href="tel:18001234567"
-            className="mt-2 flex animate-fade-up stagger-6 items-center justify-center gap-2 rounded-xl border border-brand-blue/20 bg-brand-blue-light py-2.5 text-sm font-semibold text-brand-blue-dark transition-colors hover:bg-brand-blue/10"
+        {/* Right action items */}
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Dark mode button */}
+          <button
+            type="button"
+            onClick={() => setDark(!dark)}
+            className="rounded-full p-2 text-slate-600 transition hover:bg-brand-blue-light/70 dark:text-slate-300 dark:hover:bg-slate-800"
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
           >
-            <Phone className="h-4 w-4" />
-            1800-123-4567 · Free Helpline
-          </a>
-        </nav>
-      </div>
+            {dark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+
+          {/* Book Appointment CTA button */}
+          <span className="hidden sm:flex">
+            <Link
+              to="/appointment"
+              className="inline-flex items-center justify-center rounded-full bg-[#1766c0] px-5 py-2 text-sm font-extrabold tracking-wide text-white shadow-sm shadow-brand-blue/20 transition-all duration-300 hover:bg-[#0f4c92] hover:shadow-md hover:brightness-105 active:scale-95"
+            >
+              Book Appointment
+            </Link>
+          </span>
+
+          {/* Mobile hamburger button */}
+          <button
+            type="button"
+            className="rounded-full p-2 text-slate-700 lg:hidden dark:text-slate-200"
+            onClick={() => setOpen((prev) => !prev)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu dropdown */}
+      {open && (
+        <div
+          id="mobile-menu"
+          className="overflow-hidden border-t border-line/80 bg-white/95 backdrop-blur-2xl lg:hidden dark:border-slate-800 dark:bg-[#0f2a43]/98 animate-fade-in"
+        >
+          <ul className="space-y-1 px-4 py-4">
+            {navLinks.map((item) => (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  end={item.to === "/"}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block rounded-2xl px-4 py-3 text-base font-semibold ${
+                      isActive
+                        ? "bg-brand-blue-light text-brand-blue-dark dark:bg-slate-800 dark:text-brand-teal"
+                        : "text-slate-700 hover:bg-brand-blue-light/60 dark:text-slate-200 dark:hover:bg-slate-800"
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+            <li className="pt-2">
+              <Link
+                to="/appointment"
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center justify-center rounded-full bg-[#1766c0] px-6 py-3 font-display text-base font-extrabold text-white shadow-md shadow-brand-blue/20 transition-all hover:bg-[#0f4c92]"
+              >
+                Book Appointment
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   )
 }

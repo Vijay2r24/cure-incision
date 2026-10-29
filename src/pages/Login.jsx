@@ -21,7 +21,7 @@ export default function Login() {
       <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-brand-blue/10 blur-3xl animate-drift pointer-events-none" />
       <div className="absolute -right-16 bottom-0 h-56 w-56 rounded-full bg-brand-teal/10 blur-3xl animate-drift pointer-events-none [animation-delay:-5s]" />
 
-      <div className="container-page grid gap-10 py-16 lg:grid-cols-2 lg:items-center">
+      <div className="container-page grid gap-10 pt-28 pb-16 lg:grid-cols-2 lg:pt-36 lg:items-center">
         <motion.div
           className="relative hidden overflow-hidden rounded-card shadow-2xl lg:block"
           initial={{ opacity: 0, x: -30 }}
