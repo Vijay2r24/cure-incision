@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hokena Care Logo - Orange Edition Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: #0b1220;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 107, 0, 0.15);
+      color: #ff8533;
+      border: 1px solid rgba(255, 107, 0, 0.35);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: -0.02em;
+      max-width: 700px;
+      margin-bottom: 0.75rem;
+    }
+    h1 span {
+      background: linear-gradient(135deg, #ff7a00, #ff4500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p.sub {
+      color: #94a3b8;
+      text-align: center;
+      max-width: 580px;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.75rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 107, 0, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(255, 107, 0, 0.25);
+    }
+    .card.primary {
+      background: linear-gradient(180deg, rgba(255, 107, 0, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+      border-color: rgba(255, 107, 0, 0.5);
+    }
+    .card.primary::after {
+      content: 'RECOMMENDED';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #ff6b00;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      letter-spacing: 0.06em;
+    }
+    .preview-box {
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.2) 100%);
+      border-radius: 1.25rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 100%;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+    .card .hex {
+      font-family: monospace;
+      color: #ff8533;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .card p.desc {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #ff6b00;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      width: 100%;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #ff801a;
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px -5px rgba(255, 107, 0, 0.4);
+    }
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+    }
+    .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .comparison-section {
+      margin-top: 4rem;
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .comparison-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .item-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .item-col img {
+      width: 220px;
+      height: 220px;
+      border-radius: 1.25rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .arrow-divider {
+      font-size: 2rem;
+      color: #ff6b00;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div class="badge">🎨 Logo Color Replacement Complete</div>
+  <h1>Hokena Care Logo <span>Orange Edition</span></h1>
+  <p class="sub">The original medical blue (#1F7EC2) has been seamlessly transformed into radiant medical orange while 100% preserving the red caduceus, red cross, and crisp white typography.</p>
+
+  <div class="grid">
+    <!-- Card 1: Vibrant Orange (Primary) -->
+    <div class="card primary">
+      <div class="preview-box">
+        <img src="/hokena-care-orange.png" alt="Vibrant Orange Logo">
+      </div>
+      <h3>Vibrant Orange</h3>
+      <div class="hex">#FF6B00</div>
+      <p class="desc">High-contrast, radiant energetic orange. Perfect for medical authority, warmth, and vitality.</p>
+      <a href="/hokena-care-orange.png" download="hokena-care-orange-vibrant.png" class="btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download (575x575 PNG)
+      </a>
+    </div>
+
+    <!-- Card 2: Warm Amber Orange -->
+    <div class="card">
+      <div class="preview-box">
+        <img src="/hokena_care_logo_warm.png" alt="Warm Orange Logo">
+      </div>
+      <h3>Warm Orange</h3>
+      <div class="hex">#FF7A00</div>
+      <p class="desc">Friendly, golden-warm medical tone with high clarity across both light and dark backgrounds.</p>
+      <a href="/hokena_care_logo_warm.png" download="hokena-care-orange-warm.png" class="btn secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download (575x575 PNG)
+      </a>
+    </div>
+
+    <!-- Card 3: Deep Brand Orange -->
+    <div class="card">
+      <div class="preview-box">
+        <img src="/hokena_care_logo_deep.png" alt="Deep Orange Logo">
+      </div>
+      <h3>Deep Orange</h3>
+      <div class="hex">#EB5500</div>
+      <p class="desc">Bolder, rich reddish-orange that gives a solid institutional presence and deep contrast.</p>
+      <a href="/hokena_care_logo_deep.png" download="hokena-care-orange-deep.png" class="btn secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download (575x575 PNG)
+      </a>
+    </div>
+
+    <!-- Card 4: Modern Brand Orange -->
+    <div class="card">
+      <div class="preview-box">
+        <img src="/hokena_care_logo_modern.png" alt="Modern Orange Logo">
+      </div>
+      <h3>Modern Orange</h3>
+      <div class="hex">#F97316</div>
+      <p class="desc">Tailwind-standard clinical orange tone. Clean, contemporary, and balanced.</p>
+      <a href="/hokena_care_logo_modern.png" download="hokena-care-orange-modern.png" class="btn secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download (575x575 PNG)
+      </a>
+    </div>
+  </div>
+
+  <!-- Before / After Comparison -->
+  <div class="comparison-section">
+    <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Side-by-Side Comparison</h2>
+    <p style="color: #94a3b8; font-size: 0.9rem;">Notice that the red cross (#F44236), caduceus, and white text are 100% pristine and unaffected.</p>
+    
+    <div class="comparison-grid">
+      <div class="item-col">
+        <img src="/hokena-care-original-blue.png" alt="Original Blue Logo">
+        <span style="font-weight: 700; color: #60a5fa;">Original Blue (#1F7EC2)</span>
+      </div>
+      <div class="arrow-divider">➔</div>
+      <div class="item-col">
+        <img src="/hokena-care-orange.png" alt="New Orange Logo">
+        <span style="font-weight: 800; color: #ff6b00;">New Vibrant Orange (#FF6B00)</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
